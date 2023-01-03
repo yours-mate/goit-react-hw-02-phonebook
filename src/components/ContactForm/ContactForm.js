@@ -4,7 +4,7 @@ import css from '../ContactForm/ContactForm.module.css';
 export function ContactForm({ handleSubmit }) {
   return (
     <div>
-      <form className={css.form} onSubmit={handleSubmit}>
+      <form className={css.form} onSubmit={handleSubmit} id="form">
         <label className={css.form__label}>
           Name
           <input

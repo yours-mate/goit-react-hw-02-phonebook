@@ -2,6 +2,7 @@ import { nanoid } from "nanoid";
 import { Component } from "react";
 import { ContactForm } from "./ContactForm/ContactForm";
 import { ContactsList } from "./ContactsList/ContactsList";
+import { ContactListItem } from "./ContactListItem/ContactListItem";
 import { Filter } from "./Filter/Filter";
 
 export class App extends Component {
@@ -13,21 +14,32 @@ export class App extends Component {
     {id: 'id-4', name: 'Annie Copeland', number: '227-91-26'},
   ],
   filter: '',
-}
-
-  handleSubmit = (evt) => {
-    evt.preventDefault();
-    const newContact = {id: nanoid(), name: '', number: '',}
-    const form = evt.currentTarget;
+  }
+  
+  handleFormSubmit = e => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const newContact = { id: nanoid(), name: '', number: '', };
     newContact.name = form.elements.name.value;
     newContact.number = form.elements.number.value;
-    const names = this.state.contacts.map(c => c.name.toLowerCase());
-    names.includes(newContact.name.toLowerCase()) ? alert(`${newContact.name}`) : 
-    this.setState((prevState) => ({
-      contacts: [...prevState.contacts, newContact],
-    }));
-    form.reset();
+    this.handleSubmit(newContact);
   }
+
+  handleSubmit = (newContact) => {
+    const names = this.state.contacts.map(c => c.name.toLowerCase());
+    if (names.includes(newContact.name.toLowerCase())) {
+      alert(`${newContact.name} is already in the contacts list.`);
+      return;
+    } else {
+      this.setState(prevState => (
+        {
+          contacts: [...prevState.contacts, newContact],
+        }
+      ));
+      document.getElementById("form").reset();
+}
+  }
+
 
   handleFilterState = (evt) => {
     this.setState({ filter: evt.target.value });
@@ -38,15 +50,19 @@ export class App extends Component {
     return newContacts;
   }
 
-  handleDelete = (evt) => {
-    console.log(evt.target.name);
-    const contactToDelete = this.state.contacts.map(c => c.id).indexOf(evt.target.name);
+  handleBtnDeleteClick = (e) => {
+    const id = e.target.name;
+    this.handleDelete(id);
+  }
+
+  handleDelete = (id) => {
+    const contactToDelete = this.state.contacts.map(c => c.id).indexOf(id);
     this.state.contacts.splice(contactToDelete, 1);
     this.setState(prevState => ({
       contacts: prevState.contacts,
     }))
   }
-  
+
   render() {
     const searchedContacts = this.handleSearch();
     return (
@@ -60,10 +76,12 @@ export class App extends Component {
       }}
       >
         <h1>Phonebook</h1>
-        <ContactForm handleSubmit={this.handleSubmit} />
+        <ContactForm handleSubmit={this.handleFormSubmit} />
         <h2>Contacts</h2>
         <Filter handleFilterState={this.handleFilterState}/>
-        <ContactsList contacts={searchedContacts} handleDelete={this.handleDelete} />
+        <ContactsList>
+          <ContactListItem contacts={searchedContacts} handleDelete={this.handleBtnDeleteClick} />
+          </ContactsList>
     </div>
     )
   }

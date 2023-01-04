@@ -1,13 +1,27 @@
 import PropTypes from 'prop-types';
+import { ContactListItem } from 'components/ContactListItem/ContactListItem';
 
-export function ContactsList({ children }) {
+export function ContactsList({ contacts, handleDelete }) {
   return (
     <div>
-      <ul>{children}</ul>
+      <ul>
+        {contacts.map(contact => (
+          <div key={contact.id}>
+            <ContactListItem contact={contact} handleDelete={handleDelete} />
+          </div>
+        ))}
+      </ul>
     </div>
   );
 }
 
-ContactsList.propTypes = {
-  children: PropTypes.object,
+ContactListItem.propTypes = {
+  contacts: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      number: PropTypes.string.isRequired,
+    })
+  ),
+  handleDelete: PropTypes.func.isRequired,
 };

@@ -2,7 +2,6 @@ import { nanoid } from "nanoid";
 import { Component } from "react";
 import { ContactForm } from "./ContactForm/ContactForm";
 import { ContactsList } from "./ContactsList/ContactsList";
-import { ContactListItem } from "./ContactListItem/ContactListItem";
 import { Filter } from "./Filter/Filter";
 
 export class App extends Component {
@@ -79,9 +78,7 @@ export class App extends Component {
         <ContactForm handleSubmit={this.handleFormSubmit} />
         <h2>Contacts</h2>
         <Filter handleFilterState={this.handleFilterState}/>
-        <ContactsList>
-          <ContactListItem contacts={searchedContacts} handleDelete={this.handleBtnDeleteClick} />
-          </ContactsList>
+        <ContactsList contacts={searchedContacts} handleDelete={this.handleBtnDeleteClick} />
     </div>
     )
   }

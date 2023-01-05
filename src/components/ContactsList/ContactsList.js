@@ -6,9 +6,11 @@ export function ContactsList({ contacts, handleDelete }) {
     <div>
       <ul>
         {contacts.map(contact => (
-          <div key={contact.id}>
-            <ContactListItem contact={contact} handleDelete={handleDelete} />
-          </div>
+          <ContactListItem
+            contact={contact}
+            handleDelete={handleDelete}
+            key={contact.id}
+          />
         ))}
       </ul>
     </div>
